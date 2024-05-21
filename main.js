@@ -16,8 +16,8 @@ const sortedElements = Array.from(elements).sort(function (a, b) {
     return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
 });
 
-const inAnimation=()=>{
- 
+const inAnimation = () => {
+
     document.body.style.opacity = 1;
     sortedElements.forEach((element, index) => {
         var pathTransform = 0;
@@ -35,7 +35,7 @@ const inAnimation=()=>{
         });
     });
 
-   
+
 }
 
 const outAnimation = () => {
@@ -56,9 +56,9 @@ const outAnimation = () => {
 scriptgsap.onload = function () {
     setTimeout(() => {
         // timeout is nessaesaary to set all variable set by client.
-        inAnimation();
+        // inAnimation();
     }, 100);
- 
+
 };
 
 
@@ -95,28 +95,28 @@ excelRead.onload = function () {
 
         xhr.send();
     }
-
     // Usage
     readExcelFromSameDirectory('./aa.xlsx', (err, excelData) => {
         if (err) {
             console.error('Error reading Excel file:', err);
             return;
         }
-        console.log('Excel data:', excelData);
-        var i=0;
+
+        var i = 0;
         setInterval(() => {
-            setTimeout(() => {
-                updatestring('name', excelData[i].Name);
-                updatestring('age', excelData[i].Age);
-                inAnimation()
-            }, 1000);
-        
+                let xml = '';
+                Object.keys(excelData[i]).forEach(key => {
+                    console.log(`${key}: ${excelData[i][key]}`);
+                    xml += `<componentData id="${key}"><data id="text" value="${excelData[i][key]}" /></componentData>`;
+                  });
+                xml = `<templateData>${xml}</templateData>`;
+                update(xml);
+                inAnimation();
             i++
-            if (i>excelData.length-1){
-                i=0;
+            if (i > excelData.length - 1) {
+                i = 0;
             }
         }, 3000);
-
     });
 };
 
